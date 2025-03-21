@@ -9,7 +9,7 @@
 #include <pthread.h>
 #include <raylib.h>
 
-#define SERVER_IP "192.168.0.37"
+#define SERVER_IP "coloque o ip aqui"
 #define SERVER_PORT 80
 #define BUFFER_SIZE 4096
 
