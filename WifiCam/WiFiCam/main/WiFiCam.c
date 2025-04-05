@@ -1,3 +1,10 @@
+/*
+* TODO: WiFi, conectar em uma rede ou gerar o proprio beacon?
+* TODO: Separar setup da camera e threads em arquivos diferentes.
+* TODO: Mandar o que pro PC? Intensidades? Talvez desenhar um "esquema" para visualizacao?
+* TODO: Arquivo de configuracao para FPS, qualidade e credenciais do WiFi
+* Nota: As IDEs reclamam de flags de compilacao e imports, mas ao compilar nao tem erro.
+*/
 #include <stdint.h>
 #include <stdio.h>
 #include "esp_camera.h"
@@ -59,12 +66,14 @@ void setup_camera() {
 
 QueueHandle_t frame_queue;
 
+static const uint8_t FPS = 24;
+
 void camera_task(void *pvParams) {
     while (1) {
         camera_fb_t *frame = esp_camera_fb_get();
         if (frame) xQueueSend(frame_queue, &frame, portMAX_DELAY);
         ESP_LOGD(T_CAM, "Captured Frame");
-        vTaskDelay(pdMS_TO_TICKS(1000/24));
+        vTaskDelay(pdMS_TO_TICKS(1000/FPS));
     }
 }
 
