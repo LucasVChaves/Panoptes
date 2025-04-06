@@ -60,4 +60,26 @@ void wifi_init_ap() {
     ESP_LOGI(T_WIFI, "Access Point initialized with success. SSID: %s", WIFI_SSID);
 }
 
+static esp_err_t data_handler() {
+    ESP_LOGI(T_WIFI, "TODO Handler");
+    return ESP_OK;
+}
+
+void start_webserver() {
+    httpd_config_t server_cfg = HTTPD_DEFAULT_CONFIG();
+    httpd_uri_t data_uri = {
+        .uri = "/data",
+        .method = HTTP_GET,
+        .handler = data_handler
+    };
+
+    httpd_handle_t server = NULL;
+    if (httpd_start(&server, &server_cfg) == ESP_OK) {
+        httpd_register_uri_handler(server, &data_uri);
+    }
+    
+    // IP padrao do ESP e URI /data
+    ESP_LOGI(T_WIFI, "HTTP WebServer initialized with success at 192.168.4.1/data");
+}
+
 #endif // !WIFI_H

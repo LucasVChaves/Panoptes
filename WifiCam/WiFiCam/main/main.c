@@ -1,4 +1,5 @@
 /*
+* TODO: Config do IP, submask e gateway 
 * TODO: Persistencia do WiFi (Watchdog, etc)
 * TODO: Mandar o que pro PC? Intensidades? Talvez desenhar um "esquema" para visualizacao?
 * Nota: As IDEs reclamam de flags de compilacao e imports, mas ao compilar nao tem erro.
@@ -29,6 +30,7 @@ void app_main(void) {
     // Camera double buffer
     frame_queue = xQueueCreate(2, sizeof(camera_fb_t *));
     wifi_init_ap();
+    start_webserver();
 
     xTaskCreatePinnedToCore(camera_task, "camera", 4096, NULL, 5, NULL, 0);
     xTaskCreatePinnedToCore(processing_task, "processing", 4096, NULL, 5, NULL, 1);
