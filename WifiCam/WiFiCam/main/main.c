@@ -1,7 +1,6 @@
 /*
-* TODO: WiFi, conectar em uma rede ou gerar o proprio beacon?
+* TODO: Persistencia do WiFi (Watchdog, etc)
 * TODO: Mandar o que pro PC? Intensidades? Talvez desenhar um "esquema" para visualizacao?
-* TODO: Arquivo de configuracao para FPS, qualidade e credenciais do WiFi
 * Nota: As IDEs reclamam de flags de compilacao e imports, mas ao compilar nao tem erro.
 */
 #include <stdint.h>
