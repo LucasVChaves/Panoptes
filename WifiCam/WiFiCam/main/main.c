@@ -16,6 +16,7 @@
 #include "config.h"
 #include "camera.h"
 #include "computer_vision.h"
+#include "wifi.h"
 
 /*===> Main <===*/
 void app_main(void) {
@@ -28,6 +29,7 @@ void app_main(void) {
     setup_camera();
     // Camera double buffer
     frame_queue = xQueueCreate(2, sizeof(camera_fb_t *));
+    wifi_init_ap();
 
     xTaskCreatePinnedToCore(camera_task, "camera", 4096, NULL, 5, NULL, 0);
     xTaskCreatePinnedToCore(processing_task, "processing", 4096, NULL, 5, NULL, 1);

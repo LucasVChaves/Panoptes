@@ -28,7 +28,7 @@ void process_img(camera_fb_t *frame) {
             
             // thresholds
             if (r > 0x18 && g < 0x0C && b < 0x0C) {
-                ESP_LOGI(T_CV, "Red pixel found in (%d,%d)", j, i);
+                //ESP_LOGI(T_CV, "Red pixel found in (%d,%d)", j, i);
             }
         }
     }

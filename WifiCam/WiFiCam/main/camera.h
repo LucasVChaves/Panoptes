@@ -70,7 +70,7 @@ void camera_task(void *pvParams) {
     while (1) {
         camera_fb_t *frame = esp_camera_fb_get();
         if (frame) xQueueSend(frame_queue, &frame, portMAX_DELAY);
-        ESP_LOGD(T_CAM, "Captured Frame");
+        //ESP_LOGD(T_CAM, "Captured Frame");
         vTaskDelay(pdMS_TO_TICKS(1000/FPS));
     }
 }
