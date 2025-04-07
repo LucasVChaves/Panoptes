@@ -25,6 +25,8 @@ Para fazer o upload do firmware, siga os passos:
    O serial de debug irá mostrar o IP do ESP32-CAM e o status da conexão com a rede WiFi.
 7. Com o computador conectado na rede do ESP, abra o visualizador e digite o IP do ESP para ver os dados coletados.
 
+> A rede padrão é: SSID: `ESPCAM POF MultiSensor` e senha: `cafezin2077`
+
 ## Configuração
 
 ### WiFi
