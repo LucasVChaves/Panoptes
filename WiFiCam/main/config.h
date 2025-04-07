@@ -40,6 +40,11 @@ static const uint8_t framesize_opt = 2;
 */
 static const uint8_t FPS = 24;
 
+/* JPEG
+ * % de compressao do JPEG, colocar muito alto gera muitos artefatos
+ */
+static const uint8_t JPEG_COMPRESSION = 12;
+
 /* Tags para logs */
 static const char* T_CAM = "CAMERA";
 static const char* T_CV = "COMPUTER-VISION";

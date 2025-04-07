@@ -38,7 +38,7 @@ void setup_camera() {
     config.xclk_freq_hz = 20000000;
     config.pixel_format = PIXFORMAT_RGB565; 
     config.frame_size = FRAMESIZE_QVGA;
-    config.jpeg_quality = 12;
+    config.jpeg_quality = JPEG_COMPRESSION;
     config.fb_count = 2;
 
     if (framesize_opt == 1) {
