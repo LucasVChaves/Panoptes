@@ -15,6 +15,7 @@
 #include "lwip/inet.h"
 #include "lwip/ip_addr.h"
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -26,6 +27,8 @@ static inline void ip_str_to_octets(const char* ip_str, uint8_t octets[4]) {
     strncpy(ip_copy, ip_str, sizeof(ip_copy) - 1);
     ip_copy[15] = '\0';
     
+    // strtok nao eh segura, causa buffer overflow regularmente,
+    // futuramente vou escrever uma solucao autoral
     char* token = strtok(ip_copy, ".");
     for (int i = 0; i < 4 && token != NULL; i++) {
         octets[i] = (uint8_t)atoi(token);
@@ -42,7 +45,7 @@ static inline void ip_str_to_octets(const char* ip_str, uint8_t octets[4]) {
 // ------------------------------------------------------------------------
 
 void wifi_init_ap() {
-    // O WiFi do esp depende de memoria livre no NVS
+    // O WiFi do esp depende de memoria livre do Non-Volatile Storage
     esp_err_t nvs_err = nvs_flash_init();
     if (nvs_err == ESP_ERR_NVS_NO_FREE_PAGES || nvs_err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -101,8 +104,12 @@ void wifi_init_ap() {
     ESP_LOGI(T_WIFI, "Access Point initialized with success. SSID: %s", WIFI_SSID);
 }
 
-static esp_err_t data_handler() {
-    ESP_LOGI(T_WIFI, "TODO Handler");
+static esp_err_t data_handler(httpd_req_t *req) {
+    char json[512];
+    snprintf(json, sizeof(json),"{\"TEST JSON\":[%d, %d]}\n", 1, 2);
+
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, json, strlen(json));
     return ESP_OK;
 }
 

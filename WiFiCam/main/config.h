@@ -23,8 +23,8 @@
  * NETMASK por padrao em quase todo sistema eh 255.255.255.0,
  * se precisar mudar (o que eu duvido muito) ta ai
  */
-static const char* ip_addr = "192.168.4.6";
-static const char* gateway = "192.168.4.6";
+static const char* ip_addr = "192.168.4.1";
+static const char* gateway = "192.168.4.1";
 static const char* netmask = "255.255.255.0";
 
 /* Framesize (resolucao):
