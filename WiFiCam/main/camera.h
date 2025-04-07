@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "esp_camera.h"
+#include "esp_log_level.h"
 #include "freertos/projdefs.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -12,6 +13,7 @@
 #include "config.h"
 
 #define CAMERA_MODEL_AI_THINKER
+
 
 /* Setup da Camera */
 // Alguns valores sao default da documentacao da lib
@@ -60,6 +62,11 @@ void setup_camera() {
         return;
     }
     ESP_LOGI(T_CAM, "Camera setup with success");
+
+    // O HAL da camera ta com mania de printar cada vez que 
+    // liga o VSYNC e polui o serial, aqui to setando pra 
+    // printar so erros
+    esp_log_level_set("cam_hal", ESP_LOG_ERROR);
 }
 
 /*===> Thread de Captura <===*/
