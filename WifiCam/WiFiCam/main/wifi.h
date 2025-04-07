@@ -4,11 +4,42 @@
 #include "config.h"
 #include "esp_err.h"
 #include "esp_interface.h"
+#include "esp_netif_ip_addr.h"
+#include "esp_netif_types.h"
+#include "esp_netif.h"
 #include "esp_wifi.h"
 #include "esp_log.h"
 #include "esp_http_server.h"
 #include "esp_wifi_types_generic.h"
 #include "nvs_flash.h"
+#include "lwip/inet.h"
+#include "lwip/ip_addr.h"
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+
+// Funcoes helper para config de IP 
+// -----------------------------------------------------------------------
+
+static inline void ip_str_to_octets(const char* ip_str, uint8_t octets[4]) {
+    char ip_copy[16];
+    strncpy(ip_copy, ip_str, sizeof(ip_copy) - 1);
+    ip_copy[15] = '\0';
+    
+    char* token = strtok(ip_copy, ".");
+    for (int i = 0; i < 4 && token != NULL; i++) {
+        octets[i] = (uint8_t)atoi(token);
+        token = strtok(NULL, ".");
+    }
+}
+
+#define IP_STR_TO_ADDR4(ip_var, ip_str) do { \
+    uint8_t octets[4]; \
+    ip_str_to_octets(ip_str, octets); \
+    IP4_ADDR(&(ip_var), octets[0], octets[1], octets[2], octets[3]); \
+} while(0)
+
+// ------------------------------------------------------------------------
 
 void wifi_init_ap() {
     // O WiFi do esp depende de memoria livre no NVS
@@ -27,6 +58,16 @@ void wifi_init_ap() {
         ESP_LOGE(T_WIFI, "Failed to create Access Point interface");
         return;
     }
+
+    esp_netif_ip_info_t ip_info;
+    // Valores extraidos do config.h
+    IP_STR_TO_ADDR4(ip_info.ip, ip_addr);
+    IP_STR_TO_ADDR4(ip_info.gw, gateway);
+    IP_STR_TO_ADDR4(ip_info.netmask, netmask);
+
+    esp_netif_dhcps_stop(ap_netif);
+    esp_netif_set_ip_info(ap_netif, &ip_info);
+    esp_netif_dhcps_start(ap_netif);
 
     wifi_init_config_t default_cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&default_cfg));
@@ -78,8 +119,7 @@ void start_webserver() {
         httpd_register_uri_handler(server, &data_uri);
     }
     
-    // IP padrao do ESP e URI /data
-    ESP_LOGI(T_WIFI, "HTTP WebServer initialized with success at 192.168.4.1/data");
+    ESP_LOGI(T_WIFI, "HTTP WebServer initialized with success at %s/data", ip_addr);
 }
 
 #endif // !WIFI_H

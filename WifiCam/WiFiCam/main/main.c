@@ -1,5 +1,4 @@
 /*
-* TODO: Config do IP, submask e gateway 
 * TODO: Persistencia do WiFi (Watchdog, etc)
 * TODO: Mandar o que pro PC? Intensidades? Talvez desenhar um "esquema" para visualizacao?
 * Nota: As IDEs reclamam de flags de compilacao e imports, mas ao compilar nao tem erro.
