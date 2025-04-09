@@ -18,22 +18,35 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <errno.h>
 
 // Funcoes helper para config de IP 
 // -----------------------------------------------------------------------
 
-static inline void ip_str_to_octets(const char* ip_str, uint8_t octets[4]) {
-    char ip_copy[16];
-    strncpy(ip_copy, ip_str, sizeof(ip_copy) - 1);
-    ip_copy[15] = '\0';
-    
-    // strtok nao eh segura, causa buffer overflow regularmente,
-    // futuramente vou escrever uma solucao autoral
-    char* token = strtok(ip_copy, ".");
-    for (int i = 0; i < 4 && token != NULL; i++) {
-        octets[i] = (uint8_t)atoi(token);
-        token = strtok(NULL, ".");
+bool ip_str_to_octets(const char* ip_str, uint8_t octets[4]) {
+    char* endptr;
+    long val;
+    const char *ptr = ip_str;
+
+    for (int i = 0; i < 4; i++) {
+        errno = 0;
+        val = strtol(ptr, &endptr, 10);
+        // Verifica erros de conversao, valores fora de faixa,
+        // valores fora do range do octeto e delimitadores invalidos
+        if (endptr == ptr || 
+            errno == ERANGE || 
+            val < 0 || 
+            val > 255 || 
+            (*endptr != '.' && *endptr != '\0' && i < 3)) {
+            return false;
+        }
+
+        octets[i] = (uint8_t)val;
+        ptr = endptr + 1;
     }
+
+    return (*endptr == '\0');
 }
 
 #define IP_STR_TO_ADDR4(ip_var, ip_str) do { \
