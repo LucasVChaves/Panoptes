@@ -6,8 +6,8 @@ Equipamento do LITel pra medir a intensidade de múltiplas fibras POF (Polymer O
 
 Este monorepo possui 3 partes principais:
 
-- WiFiCam: Firmware do ESP32. Responsável por capturar imagens da fibra e servir uma stream de JPEGs via WiFi.
-- Visualizer: Programa em C utilizando OpenCV e Raylib para visualizar as imagens e calcular a intensidade de luz nas fibras.
+- WiFiCam: Firmware do ESP32. Responsável por capturar imagens da fibra, medir suas intensidades e servir os resultados via http. 
+- Visualizer: Programa desktop em Python que mostra os resultados obtidos pelo equipamento. 
 - Assets: TODO: Possui o STL do suporte da câmera e outros arquivos de design e impressão 3D.
 
 Dentro de cada pasta, há um README.md com informações específicas e documentação de cada parte do projeto.
